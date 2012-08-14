@@ -14,6 +14,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'launchy'
+  gem 'rspec'
   gem 'rspec-expectations'
 end
 group :production do
