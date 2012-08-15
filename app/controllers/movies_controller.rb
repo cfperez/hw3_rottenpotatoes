@@ -14,8 +14,14 @@ class MoviesController < ApplicationController
     when 'release_date'
       ordering,@date_header = {:order => :release_date}, 'hilite'
     end
+
     @all_ratings = Movie.all_ratings
-    @selected_ratings = params[:ratings] || session[:ratings] || {}
+
+    if params.key? :commit
+      @selected_ratings =  params[:ratings]
+    else
+      @selected_ratings =  session[:ratings] || {}
+    end
 
     if params[:sort] != session[:sort]
       session[:sort] = sort
