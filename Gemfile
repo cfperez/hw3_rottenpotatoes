@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
+gem 'ruby-tmdb'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -14,8 +15,10 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'launchy'
-  gem 'rspec'
-  gem 'rspec-expectations'
+#  gem 'rspec'
+  gem 'ZenTest'
+#  gem 'rspec-expectations'
+  gem 'rspec-rails'
 end
 group :production do
 #  gem 'pg'

@@ -1,4 +1,10 @@
+require 'ruby-debug'
+
 class MoviesController < ApplicationController
+
+  def search_tmdb
+    @movies = Movie.find_in_tmdb params[:search_terms]
+  end
 
   def show
     id = params[:id] # retrieve movie ID from URI route
@@ -18,20 +24,22 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
 
     if params.key? :commit
-      @selected_ratings =  params[:ratings]
+      @selected_ratings =  params[:ratings]||{}
+      commit = true
     else
       @selected_ratings =  session[:ratings] || {}
+      commit = false
     end
 
     if params[:sort] != session[:sort]
       session[:sort] = sort
-      redirect_to :sort => sort, :ratings => @selected_ratings and return
+      redirect_to :sort => sort, :ratings => @selected_ratings and return if not commit
     end
 
     if params[:ratings] != session[:ratings] and @selected_ratings != {}
       session[:sort] = sort
       session[:ratings] = @selected_ratings
-      redirect_to :sort => sort, :ratings => @selected_ratings and return
+      redirect_to :sort => sort, :ratings => @selected_ratings and return if not commit
     end
     @movies = Movie.find_all_by_rating(@selected_ratings.keys, ordering)
   end
