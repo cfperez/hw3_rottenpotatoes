@@ -15,17 +15,23 @@ class MoviesController < ApplicationController
       ordering,@date_header = {:order => :release_date}, 'hilite'
     end
     @all_ratings = Movie.all_ratings
-    @selected_ratings = params[:ratings] || session[:ratings] || {}
+    if params.key? :commit
+      @selected_ratings =  params[:ratings]||{}
+      commit = true
+    else
+      @selected_ratings =  session[:ratings] || {}
+      commit = false
+    end
 
     if params[:sort] != session[:sort]
       session[:sort] = sort
-      redirect_to :sort => sort, :ratings => @selected_ratings and return
+      redirect_to :sort => sort, :ratings => @selected_ratings and return if not commit
     end
 
     if params[:ratings] != session[:ratings] and @selected_ratings != {}
       session[:sort] = sort
       session[:ratings] = @selected_ratings
-      redirect_to :sort => sort, :ratings => @selected_ratings and return
+      redirect_to :sort => sort, :ratings => @selected_ratings and return if not commit
     end
     @movies = Movie.find_all_by_rating(@selected_ratings.keys, ordering)
   end
